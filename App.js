@@ -20,7 +20,7 @@ function letChat(csrfToken) {
     csrfToken,
     auth: {
       headers: {
-        Authorization: "Bearer blahblah"
+        Authorization: "Bearer token"
       }
     }
   });
