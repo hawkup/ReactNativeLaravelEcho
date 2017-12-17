@@ -1,5 +1,34 @@
 import React from "react";
+import Echo from "./Echo";
 import { GiftedChat } from "react-native-gifted-chat";
+
+fetch("http://localhost/csrf")
+  .then(response => {
+    return response.text().then(function(text) {
+      return text;
+    });
+  })
+  .then(csrfToken => {
+    console.log(csrfToken);
+    letChat(csrfToken);
+  });
+
+function letChat(csrfToken) {
+  const echo = new Echo({
+    broadcaster: "socket.io",
+    host: "http://localhost:6001",
+    csrfToken,
+    auth: {
+      headers: {
+        Authorization: "Bearer blahblah"
+      }
+    }
+  });
+
+  echo.private("App.User.1").listen("ChatMessageWasReceived", e => {
+    console.log(e);
+  });
+}
 
 export default class App extends React.Component {
   state = {
